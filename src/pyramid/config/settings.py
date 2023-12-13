@@ -1,6 +1,6 @@
 import os
 
-from pyramid.settings import asbool, aslist
+from pyramid.settings import SettingsDict, asbool, aslist
 
 
 class SettingsConfiguratorMixin:
@@ -57,7 +57,7 @@ def Settings(d=None, _environ_=os.environ, **kw):
     keyword args)."""
     if d is None:
         d = {}
-    d = dict(d)
+    d = SettingsDict(d)
     d.update(**kw)
 
     eget = _environ_.get

@@ -96,3 +96,28 @@ class Test_aslist(unittest.TestCase):
     def test_with_string_crsep_spacesep_and_integer(self):
         result = self._callFUT([' abc def ghi ', 1])
         self.assertEqual(result, ['abc', 'def', 'ghi', 1])
+
+
+class Test_SettingsDict(unittest.TestCase):
+    def _makeOne(self, d={}):
+        from pyramid.settings import SettingsDict
+
+        return SettingsDict(d)
+
+    def test_basic_dict_operations(self):
+        # Make sure setting and retrieving settings works
+        d = self._makeOne({'a': 1})
+        self.assertEqual(d['a'], 1)
+        with self.assertRaises(KeyError):
+            d['b']
+        d['b'] = 2
+        self.assertEqual(d['a'], 1)
+        self.assertEqual(d['b'], 2)
+
+    def test_repr(self):
+        d = self._makeOne({'a': 1})
+        self.assertEqual(repr(d), 'SettingsDict(<REDACTED>)')
+
+    def test_str(self):
+        d = self._makeOne({'a': 1})
+        self.assertEqual(str(d), 'SettingsDict(<REDACTED>)')

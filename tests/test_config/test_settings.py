@@ -9,9 +9,12 @@ class TestSettingsConfiguratorMixin(unittest.TestCase):
         return config
 
     def test__set_settings_as_None(self):
+        from pyramid.settings import SettingsDict
+
         config = self._makeOne()
         settings = config._set_settings(None)
         self.assertTrue(settings)
+        self.assertIsInstance(settings, SettingsDict)
 
     def test__set_settings_does_not_uses_original_dict(self):
         config = self._makeOne()
@@ -21,9 +24,12 @@ class TestSettingsConfiguratorMixin(unittest.TestCase):
         self.assertNotIn('pyramid.debug_all', dummy)
 
     def test__set_settings_as_dictwithvalues(self):
+        from pyramid.settings import SettingsDict
+
         config = self._makeOne()
         settings = config._set_settings({'a': '1'})
         self.assertEqual(settings['a'], '1')
+        self.assertIsInstance(settings, SettingsDict)
 
     def test_get_settings_nosettings(self):
         from pyramid.registry import Registry
@@ -33,7 +39,9 @@ class TestSettingsConfiguratorMixin(unittest.TestCase):
         self.assertEqual(config.get_settings(), None)
 
     def test_get_settings_withsettings(self):
-        settings = {'a': 1}
+        from pyramid.settings import SettingsDict
+
+        settings = SettingsDict({'a': 1})
         config = self._makeOne()
         config.registry.settings = settings
         self.assertEqual(config.get_settings(), settings)
@@ -99,6 +107,12 @@ class TestSettings(unittest.TestCase):
             environ = {}
         klass = self._getTargetClass()
         return klass(d, _environ_=environ)
+
+    def test_return_SettingsDict(self):
+        from pyramid.settings import SettingsDict
+
+        settings = self._makeOne()
+        self.assertIsInstance(settings, SettingsDict)
 
     def test_noargs(self):
         settings = self._makeOne()

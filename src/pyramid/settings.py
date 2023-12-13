@@ -36,3 +36,16 @@ def aslist(value, flatten=True):
         else:
             result.append(value)
     return result
+
+
+class SettingsDict(dict):
+    """
+    A simple dictionary subclass that overrides :meth:`__repr__` and
+    :meth:`__str__` so as not to leak potentially sensitive values.
+
+    """
+
+    def __repr__(self):
+        return f'{self.__class__.__name__}(<REDACTED>)'
+
+    __str__ = __repr__
