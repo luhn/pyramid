@@ -5,10 +5,8 @@ import os
 from os.path import exists, getmtime, getsize
 import posixpath
 
-from pyramid.asset import abspath_from_asset_spec
 from pyramid.httpexceptions import HTTPMovedPermanently, HTTPNotFound
-from pyramid.path import caller_package
-from pyramid.resolver import AssetResolver
+from pyramid.path import AssetResolver, caller_package
 from pyramid.response import FileResponse, _guess_type
 from pyramid.traversal import traversal_path_info
 
@@ -368,8 +366,8 @@ class ManifestCacheBuster:
 
     def __init__(self, manifest_spec, reload=False):
         package_name = caller_package().__name__
-        self.manifest_path = abspath_from_asset_spec(
-            manifest_spec, package_name
+        self.manifest_path = (
+            AssetResolver(package_name).resolve(manifest_spec).abspath()
         )
         self.reload = reload
 
