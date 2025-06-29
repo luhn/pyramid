@@ -38,12 +38,20 @@ def aslist(value, flatten=True):
     return result
 
 
-class SettingsDict(dict):
+class SettingsDict:
     """
     A simple dictionary subclass that overrides :meth:`__repr__` and
     :meth:`__str__` so as not to leak potentially sensitive values.
 
     """
+    def __init__(self, d):
+        self.data = d
+
+    def __getitem__(self, key):
+        return self.data[key]
+
+    def __setitem__(self, key):
+        return self.data[key]
 
     def __repr__(self):
         return f'{self.__class__.__name__}(<REDACTED>)'
