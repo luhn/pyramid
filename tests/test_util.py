@@ -26,6 +26,14 @@ class Test_InstancePropertyHelper(unittest.TestCase):
         foo.bar = 2
         self.assertEqual(2, foo.worker)
 
+    def test_callable_without_name(self):
+        class Worker:
+            def __call__(self, obj): ...
+
+        foo = Dummy()
+        helper = self._getTargetClass()
+        self.assertRaises(ValueError, helper.set_property, foo, Worker())
+
     def test_callable_with_name(self):
         def worker(obj):
             return obj.bar
@@ -64,16 +72,6 @@ class Test_InstancePropertyHelper(unittest.TestCase):
         foo.bar = 2
         self.assertEqual(2, foo.x)
         self.assertEqual(1, foo.y)
-
-    def test_property_without_name(self):
-        def worker(obj):  # pragma: no cover
-            pass
-
-        foo = Dummy()
-        helper = self._getTargetClass()
-        self.assertRaises(
-            ValueError, helper.set_property, foo, property(worker)
-        )
 
     def test_property_with_name(self):
         def worker(obj):
@@ -245,6 +243,13 @@ class Test_InstancePropertyMixin(unittest.TestCase):
         foo.bar = 2
         self.assertEqual(2, foo.x)
 
+    def test_callable_without_name(self):
+        class Worker:
+            def __call__(self, obj): ...
+
+        foo = self._makeOne()
+        self.assertRaises(ValueError, foo.set_property, Worker())
+
     def test_callable_with_reify(self):
         def worker(obj):
             return obj.bar
@@ -269,13 +274,6 @@ class Test_InstancePropertyMixin(unittest.TestCase):
         foo.bar = 2
         self.assertEqual(2, foo.x)
         self.assertEqual(1, foo.y)
-
-    def test_property_without_name(self):
-        def worker(obj):  # pragma: no cover
-            pass
-
-        foo = self._makeOne()
-        self.assertRaises(ValueError, foo.set_property, property(worker))
 
     def test_property_with_name(self):
         def worker(obj):
