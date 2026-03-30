@@ -1,7 +1,8 @@
 from importlib.machinery import SOURCE_SUFFIXES
 import os
-import pkg_resources
 import sys
+
+from pyramid.util import resource_filename
 
 init_names = ['__init__%s' % x for x in SOURCE_SUFFIXES]
 
@@ -65,8 +66,8 @@ def package_path(package):
     # the result
     prefix = getattr(package, '__abspath__', None)
     if prefix is None:
-        prefix = pkg_resources.resource_filename(package.__name__, '')
-        # pkg_resources doesn't care whether we feed it a package
+        prefix = resource_filename(package.__name__, '')
+        # resource_filename doesn't care whether we feed it a package
         # name or a module name within the package, the result
         # will be the same: a directory name to the package itself
         try:
