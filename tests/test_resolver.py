@@ -75,19 +75,19 @@ class TestAssetResolver(unittest.TestCase):
         self.assertTrue(r.exists())
 
     def test_resolve_absspec(self):
-        from pyramid.resolver import PkgResourcesAssetDescriptor
+        from pyramid.resolver import ImportlibResourcesAssetDescriptor
 
         inst = self._makeOne(None)
         r = inst.resolve('tests:test_asset.py')
-        self.assertEqual(r.__class__, PkgResourcesAssetDescriptor)
+        self.assertEqual(r.__class__, ImportlibResourcesAssetDescriptor)
         self.assertTrue(r.exists())
 
     def test_resolve_relspec_with_pkg(self):
-        from pyramid.resolver import PkgResourcesAssetDescriptor
+        from pyramid.resolver import ImportlibResourcesAssetDescriptor
 
         inst = self._makeOne('tests')
         r = inst.resolve('test_asset.py')
-        self.assertEqual(r.__class__, PkgResourcesAssetDescriptor)
+        self.assertEqual(r.__class__, ImportlibResourcesAssetDescriptor)
         self.assertTrue(r.exists())
 
     def test_resolve_relspec_no_package(self):
@@ -97,12 +97,12 @@ class TestAssetResolver(unittest.TestCase):
     def test_resolve_relspec_caller_package(self):
         from pyramid.resolver import (
             CALLER_PACKAGE,
-            PkgResourcesAssetDescriptor,
+            ImportlibResourcesAssetDescriptor,
         )
 
         inst = self._makeOne(CALLER_PACKAGE)
         r = inst.resolve('test_asset.py')
-        self.assertEqual(r.__class__, PkgResourcesAssetDescriptor)
+        self.assertEqual(r.__class__, ImportlibResourcesAssetDescriptor)
         self.assertTrue(r.exists())
 
     def test_resolve_with_overrides(self):
@@ -140,11 +140,11 @@ class TestAssetResolver(unittest.TestCase):
         self.assertEqual(r.absspec(), 'tests:fixtures/nonminimal.txt')
 
 
-class TestPkgResourcesAssetDescriptor(unittest.TestCase):
+class TestImportlibResourcesAssetDescriptor(unittest.TestCase):
     def _getTargetClass(self):
-        from pyramid.resolver import PkgResourcesAssetDescriptor
+        from pyramid.resolver import ImportlibResourcesAssetDescriptor
 
-        return PkgResourcesAssetDescriptor
+        return ImportlibResourcesAssetDescriptor
 
     def _makeOne(
         self, pkg='tests', path='fixtures/minimal.txt', overrides=None
